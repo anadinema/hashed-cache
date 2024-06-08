@@ -1,76 +1,58 @@
-# redis-cache-test
+# hashed-cache
 
-This project uses Quarkus, the Supersonic Subatomic Java Framework.
+## Overview
 
-If you want to learn more about Quarkus, please visit its website: https://quarkus.io/ .
+A sample project on how to do caching over a POST endpoint, by generating a hash over the values
+which will remain same in the other requests.
 
-## Running the application in dev mode
+## Features
 
-You can run your application in dev mode that enables live coding using:
+- Endpoint `/v1/personal` to create a person record, example request body as below
+```json
+{
+  "name": "John Doe",
+  "profession": "Developer",
+  "gender": "male"
+}
+```
+- Endpoint `/v1/personal/search` to search for a person, example request body as below
+```json
+{
+  "query_id": "e2c56db5-dffb-48d2-94f4-714bc1ff96c8",
+  "id": 10,
+  "name": "John"
+}
+```
+- The second endpoint incorporates the cache mechanism as well, by ignoring the `query_id`
 
-```shell script
-./mvnw compile quarkus:dev
+## Getting Started
+
+### Prerequisites
+
+- Redis instance for caching and PostgreSQL server as the database of choice
+- Both the services, can be bought up by using the `datasource.yaml` in `resources` directory.
+```shell
+docker-compose -f resoruces/datasource.yaml -d up
 ```
 
-> **_NOTE:_**  Quarkus now ships with a Dev UI, which is available in dev mode only at http://localhost:8080/q/dev/.
+### Installation
 
-## Packaging and running the application
-
-The application can be packaged using:
-
-```shell script
-./mvnw package
+- Clone the repository:
+```shell
+git clone --branch <branch-name> https://github.com/anadinema/hashed-cache.git <directory>
 ```
-
-It produces the `quarkus-run.jar` file in the `target/quarkus-app/` directory.
-Be aware that it’s not an _über-jar_ as the dependencies are copied into the `target/quarkus-app/lib/` directory.
-
-The application is now runnable using `java -jar target/quarkus-app/quarkus-run.jar`.
-
-If you want to build an _über-jar_, execute the following command:
-
-```shell script
-./mvnw package -Dquarkus.package.jar.type=uber-jar
+- To run the application:
+```shell
+mvn quarkus:dev
 ```
+- The properties can be changed in `application.properties` under the resource maven project.
 
-The application, packaged as an _über-jar_, is now runnable using `java -jar target/*-runner.jar`.
+## Acknowledgements
 
-## Creating a native executable
+- Uses Quarkus - 3.11.1
+- Database - PostgreSQL
+- Caching infra - Redis (redis-stack)
 
-You can create a native executable using:
+## License
 
-```shell script
-./mvnw package -Dnative
-```
-
-Or, if you don't have GraalVM installed, you can run the native executable build in a container using:
-
-```shell script
-./mvnw package -Dnative -Dquarkus.native.container-build=true
-```
-
-You can then execute your native executable with: `./target/redis-cache-test-1.0-SNAPSHOT-runner`
-
-If you want to learn more about building native executables, please consult https://quarkus.io/guides/maven-tooling.
-
-## Related Guides
-
-- REST Jackson ([guide](https://quarkus.io/guides/rest#json-serialisation)): Jackson serialization support for Quarkus
-  REST. This extension is not compatible with the quarkus-resteasy extension, or any of the extensions that depend on it
-- Reactive PostgreSQL client ([guide](https://quarkus.io/guides/reactive-sql-clients)): Connect to the PostgreSQL
-  database using the reactive pattern
-- SmallRye Health ([guide](https://quarkus.io/guides/smallrye-health)): Monitor service health
-
-## Provided Code
-
-### REST
-
-Easily start your REST Web Services
-
-[Related guide section...](https://quarkus.io/guides/getting-started-reactive#reactive-jax-rs-resources)
-
-### SmallRye Health
-
-Monitor your application's health using SmallRye Health
-
-[Related guide section...](https://quarkus.io/guides/smallrye-health)
+Licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
