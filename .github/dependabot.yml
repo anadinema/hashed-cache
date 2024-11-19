@@ -9,3 +9,7 @@ updates:
     directory: "/" # Location of package manifests
     schedule:
       interval: "weekly"
+  - package-ecosystem: "docker" # See documentation for possible values
+    directory: "src/main/docker/" # Location of package manifests
+    schedule:
+      interval: "weekly"
